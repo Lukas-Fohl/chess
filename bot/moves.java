@@ -73,7 +73,7 @@ public class moves{
         reVal += MidControl(tempBoardPref);
         
         //last
-        reVal += kingInDanger(tempBoardPref);
+        reVal += kingInDanger(tempBoardPref);//
 
         return reVal;
     }
