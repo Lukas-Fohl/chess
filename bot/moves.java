@@ -45,8 +45,6 @@ public class moves{
                 }
             }   
         }
-        //System.out.println(movePrefList.get(0).rating);
-        //System.out.println(movePrefList.get(movePrefList.size()-1).rating);
     }
     
     private int getValue(move moveIn){
@@ -66,6 +64,8 @@ public class moves{
 
         reVal -= possibleDamageEnemy(tempBoardPref);
 
+        reVal += possibleDamage(tempBoardPref);
+
         reVal -= spreadOfPieces(tempBoardPref);
 
         reVal += openMoves(tempBoardPref)/3;
@@ -73,7 +73,7 @@ public class moves{
         reVal += MidControl(tempBoardPref);
         
         //last
-        reVal += kingInDanger(tempBoardPref);//
+        reVal += kingInDanger(tempBoardPref);
 
         return reVal;
     }
@@ -136,23 +136,23 @@ public class moves{
         return value;
     }
 
-    /*
-    private int possibleDamageDoable(board bIn){
+    private int possibleDamage(board bIn){
         int value = 0;
-        List<move> movesWeCanDo = new ArrayList<move>();
+        List<move> ownMoves = new ArrayList<move>();
         for(int x = 0; x <= 7; x++){
             for(int y = 0; y <= 7; y++){
                 if(bIn.boardContent[x][y].TypeOfPiece != piecesType.empty && colorTemp == bIn.boardContent[x][y].TypeOfColor){
-                    movesWeCanDo.addAll(bIn.possibleMoves(new int[]{x,y}));
+                    ownMoves.addAll(bIn.possibleMoves(new int[]{x,y}));
                 }
             }
         }
-        for(move m: movesWeCanDo){
-
+        for(move m: ownMoves){
+            if(bIn.boardContent[m.endPos[0]][m.endPos[1]].TypeOfColor == colorTempInv){
+                value += valueOfPiece(bIn.boardContent[m.endPos[0]][m.endPos[1]].TypeOfPiece);
+            }
         }
-        return 0;
+        return value;
     }
-    */
 
     private int possibleDamageEnemy(board bIn){
         int value = 0;
@@ -169,7 +169,6 @@ public class moves{
                 value += valueOfPiece(bIn.boardContent[m.endPos[0]][m.endPos[1]].TypeOfPiece);
             }
         }
-        System.out.println(value);
         return value;
     }
 
@@ -244,9 +243,9 @@ rate move:
     -look for value in pieces and color                                     done
     -look for spread in pieces                                              done
     -look for danger in all pieces and the value                            done
-    -check for possible damage                                              x
+    -check for possible damage                                              done
     -control of mid                                                         done
 game loop:
-    -look for more then one move
-    -look for game end
+    -look for more then one move                                            x
+    -look for game end                                                      done
 */
