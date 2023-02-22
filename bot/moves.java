@@ -60,15 +60,15 @@ public class moves{
 
         reVal += valueOfOwnnedPieces(tempBoardPref,colorTemp);
 
-        reVal -= valueOfOwnnedPieces(tempBoardPref,colorTempInv);
+        reVal -= valueOfOwnnedPieces(tempBoardPref,colorTempInv)*1.2;
 
         reVal -= possibleDamageEnemy(tempBoardPref);
 
-        reVal += possibleDamage(tempBoardPref);
+        reVal += possibleDamage(tempBoardPref)/2;
 
         reVal -= spreadOfPieces(tempBoardPref);
 
-        reVal += openMoves(tempBoardPref)/3;
+        reVal += openMoves(tempBoardPref)/5;
 
         reVal += MidControl(tempBoardPref);
         

@@ -59,9 +59,9 @@ public class board implements Cloneable{
     }
 
     public void applyMove(move moveIn){
-        if((moveIn.startPos[0] == 1 || moveIn.startPos[0] == 6) &&
+        if((moveIn.startPos[1] == 1 || moveIn.startPos[1] == 6) &&
             (boardContent[moveIn.startPos[0]][moveIn.startPos[1]].TypeOfPiece == piecesType.pawn) &&
-            (moveIn.endPos[0] == 7 || moveIn.endPos[0] == 0)){
+            (moveIn.endPos[1] == 7 || moveIn.endPos[1] == 0)){
                 boardContent[moveIn.endPos[0]][moveIn.endPos[1]] = new pieces(boardContent[moveIn.startPos[0]][moveIn.startPos[1]].TypeOfColor, piecesType.queen);
                 boardContent[moveIn.startPos[0]][moveIn.startPos[1]] = new pieces(color.empty, piecesType.empty);
         }else{
@@ -306,7 +306,7 @@ public class board implements Cloneable{
 
     private boolean isOkay(int[] pos, color curCol){
         if(pos[0] <= 7 && pos[0] >= 0 && pos[1] <= 7 && pos[1] >= 0){
-            if(curCol != this.boardContent[pos[0]][pos[1]].TypeOfColor && this.boardContent[pos[0]][pos[1]].TypeOfColor != color.empty){
+            if(curCol != this.boardContent[pos[0]][pos[1]].TypeOfColor || this.boardContent[pos[0]][pos[1]].TypeOfColor == color.empty){
                 return true;
             }
         }
@@ -369,12 +369,12 @@ public class board implements Cloneable{
                 }else{
                     charOut = ' ';
                 }
-                System.out.print(charOut+" │");
+                System.out.print(" "+charOut+" |");
             }
-            System.out.print(" "+y+"\n"+"─────────────────────────"+"\n");
+            System.out.print(" "+y+"\n"+"─────────────────────────────────"+"\n");
         }
         for(int i = 0; i < 8;i++){
-            System.out.print(" "+i+" ");
+            System.out.print("  "+i+" ");
         }
         System.out.print("\n");
     }
