@@ -59,22 +59,26 @@ public class Main {
     }
 
     private static move getFromMultiple(board boardIn,color colIn){
-        moves m = new moves();
-        //switch  between black and white
-        //linked list
-        //check for 3 moves
-        //process:
-        //  -loop through height of
-        List<movePref> temp = m.getMoves(boardIn, colIn);
-        node Parent = new node(0, null, null, null);
-        new node(0,temp.get(temp.size()-1).move_,Parent,new ArrayList<node>());
-        new node(0,temp.get(temp.size()-2).move_,Parent,new ArrayList<node>());
-        new node(0,temp.get(temp.size()-3).move_,Parent,new ArrayList<node>());
-        for(int height = 1; height < 4; height++){
-            color tempCol = (height%2!=0)?colIn:((colIn==color.white)?color.black:color.white);
-            List<movePref> temp2 = m.getMoves(boardIn, colIn);
-            for(int i = 1; i < 4; i++){
-                new node(height,temp.get(temp.size()-i).move_,null,null);
+        //save values in 2d order ( f(x) = 2^(x) ) -> point hash map ([x,y] as index and board as value)
+        for(int height = 0; height < 4; height++){
+            if(height == 0){
+                //add boardIn at (0;1)
+            }else{
+                color tempCol = (height%2!=0)?colIn:((colIn==color.white)?color.black:color.white);
+                //int x = height;
+                int YMAX = (int)Math.pow(2,height);
+                for(int i = 0; i < YMAX; i++){
+                    //get last              done
+                    //get move              
+                    //get point to save at  done
+                    int last[] = {height--, ((i%2==0)?i:i++)/2,};
+                    int savePint[] = {height,i};
+                    moves m = new moves();
+                    //get last move --> applay to board and loop for next good one
+
+                }
+                //save value at x,y
+
             }
         }
         return new move(boardIn, null, null);
