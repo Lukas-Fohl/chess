@@ -1,10 +1,8 @@
 import framework.*;
 import bot.*;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.border.Border;
+import java.util.HashMap;
 
 public class Main {
     public static void main(String[] args) {
@@ -31,7 +29,9 @@ public class Main {
                 f.applyMove(getgoodMove(f,color.black));
             }else if(inp.contains("mW")){
                 f.applyMove(getgoodMove(f,color.white));
-            }
+            }else if(inp.contains("mm")){
+                f.applyMove(getFromMultiple(f,color.white));
+            }            
             f.printBoard(); 
             running = gameEnded(f);
         }
@@ -60,20 +60,33 @@ public class Main {
 
     private static move getFromMultiple(board boardIn,color colIn){
         //save values in 2d order ( f(x) = 2^(x) ) -> point hash map ([x,y] as index and board as value)
+        HashMap<String,move> savedMoves = new HashMap<String,move>(20);
         for(int height = 0; height < 4; height++){
             if(height == 0){
                 //add boardIn at (0;1)
+                savedMoves.put(0+","+1, new move(boardIn, new int[] {0,0}, new int[] {0,0}));
             }else{
                 color tempCol = (height%2!=0)?colIn:((colIn==color.white)?color.black:color.white);
                 //int x = height;
                 int YMAX = (int)Math.pow(2,height);
-                for(int i = 0; i < YMAX; i++){
+                for(int i = 1; i < YMAX+1; i++){
                     //get last              done
                     //get move              
                     //get point to save at  done
-                    int last[] = {height--, ((i%2==0)?i:i++)/2,};
+                    int last[] = {height-1, ((i%2==0)?i:i+1)/2,};
+                    System.out.println("last\t"+last[0]+";"+last[1]);
                     int savePint[] = {height,i};
+                    System.out.println("next\t"+savePint[0]+";"+savePint[1]);
                     moves m = new moves();
+                    board bb = new board();
+                    for(int j = 0; j < 8; j++){
+                        for(int k = 0; k < 8; k++){
+                            bb.boardContent[j][k] = savedMoves.get(last[0]+","+last[1]).currentBoard.boardContent[j][k];
+                        }    
+                    }
+                    bb.applyMove(savedMoves.get(last[0]+","+last[1]));
+                    List<movePref> mm = m.getMoves(bb, tempCol);
+                    savedMoves.put(savePint[0]+","+savePint[1], mm.get(mm.size()+((i%2==0)?-1:-2)).move_);
                     //get last move --> applay to board and loop for next good one
 
                 }
@@ -81,6 +94,10 @@ public class Main {
 
             }
         }
+        for(int i = 1; i <9; i++){
+            System.out.println(savedMoves.get(3+","+i).endPos);
+        }
+        //go through last values -> find highest --> return 1st or 2nd
         return new move(boardIn, null, null);
     }
 }
