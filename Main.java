@@ -64,19 +64,16 @@ public class Main {
         for(int height = 0; height < 4; height++){
             if(height == 0){
                 //add boardIn at (0;1)
-                savedMoves.put(0+","+1, new move(boardIn, new int[] {0,0}, new int[] {0,0}));
+                savedMoves.put(0+","+1, new move(boardIn, null, null));
             }else{
                 color tempCol = (height%2!=0)?colIn:((colIn==color.white)?color.black:color.white);
                 //int x = height;
                 int YMAX = (int)Math.pow(2,height);
                 for(int i = 1; i < YMAX+1; i++){
-                    //get last              done
-                    //get move              
-                    //get point to save at  done
                     int last[] = {height-1, ((i%2==0)?i:i+1)/2,};
                     System.out.println("last\t"+last[0]+";"+last[1]);
-                    int savePint[] = {height,i};
-                    System.out.println("next\t"+savePint[0]+";"+savePint[1]);
+                    int savePoint[] = {height,i};
+                    System.out.println("next\t"+savePoint[0]+";"+savePoint[1]);
                     moves m = new moves();
                     board bb = new board();
                     for(int j = 0; j < 8; j++){
@@ -86,7 +83,9 @@ public class Main {
                     }
                     bb.applyMove(savedMoves.get(last[0]+","+last[1]));
                     List<movePref> mm = m.getMoves(bb, tempCol);
-                    savedMoves.put(savePint[0]+","+savePint[1], mm.get(mm.size()+((i%2==0)?-1:-2)).move_);
+                    savedMoves.put(savePoint[0]+","+savePoint[1], mm.get(mm.size()-((i%2==0)?1:2)).move_);
+                    //                                                             |   Problem   |
+                    bb.printBoard();
                     //get last move --> applay to board and loop for next good one
 
                 }
@@ -95,7 +94,8 @@ public class Main {
             }
         }
         for(int i = 1; i <9; i++){
-            System.out.println(savedMoves.get(3+","+i).endPos);
+            //System.out.println(savedMoves.get(3+","+i));
+            //savedMoves.get(3+","+i).currentBoard.printBoard();
         }
         //go through last values -> find highest --> return 1st or 2nd
         return new move(boardIn, null, null);
