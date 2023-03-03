@@ -65,15 +65,15 @@ public class Main {
             if(height == 0){
                 //add boardIn at (0;1)
                 savedMoves.put(0+","+1, new move(boardIn, null, null));
-            }else{
+            }else if (height > 0){
                 color tempCol = (height%2!=0)?colIn:((colIn==color.white)?color.black:color.white);
                 //int x = height;
                 int YMAX = (int)Math.pow(2,height);
                 for(int i = 1; i < YMAX+1; i++){
                     int last[] = {height-1, ((i%2==0)?i:i+1)/2,};
-                    System.out.println("last\t"+last[0]+";"+last[1]);
+                    //System.out.println("last\t"+last[0]+";"+last[1]);
                     int savePoint[] = {height,i};
-                    System.out.println("next\t"+savePoint[0]+";"+savePoint[1]);
+                    //System.out.println("next\t"+savePoint[0]+";"+savePoint[1]);
                     moves m = new moves();
                     board bb = new board();
                     for(int j = 0; j < 8; j++){
@@ -83,8 +83,8 @@ public class Main {
                     }
                     bb.applyMove(savedMoves.get(last[0]+","+last[1]));
                     List<movePref> mm = m.getMoves(bb, tempCol);
+                    //System.out.println(mm.get(mm.size()-1).move_.endPos[0] + ";;;" + mm.get(mm.size()-1).move_.endPos[1]);
                     savedMoves.put(savePoint[0]+","+savePoint[1], mm.get(mm.size()-((i%2==0)?1:2)).move_);
-                    //                                                             |   Problem   |
                     bb.printBoard();
                     //get last move --> applay to board and loop for next good one
 
@@ -101,3 +101,9 @@ public class Main {
         return new move(boardIn, null, null);
     }
 }
+
+/*
+ * TODO:
+ * -exception in List size (return of moves)
+ * -don't save moves but board (with null move)
+ */
