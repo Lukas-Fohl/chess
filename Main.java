@@ -1,10 +1,11 @@
 import framework.*;
 import bot.*;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.border.Border;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 
 public class Main {
     public static void main(String[] args) {
@@ -31,7 +32,9 @@ public class Main {
                 f.applyMove(getgoodMove(f,color.black));
             }else if(inp.contains("mW")){
                 f.applyMove(getgoodMove(f,color.white));
-            }
+            }else if(inp.contains("mm")){
+                f.applyMove(getFromMultiple(f,color.black));
+            }            
             f.printBoard(); 
             running = gameEnded(f);
         }
@@ -59,24 +62,46 @@ public class Main {
     }
 
     private static move getFromMultiple(board boardIn,color colIn){
-        moves m = new moves();
-        //switch  between black and white
-        //linked list
-        //check for 3 moves
-        //process:
-        //  -loop through height of
-        List<movePref> temp = m.getMoves(boardIn, colIn);
-        node Parent = new node(0, null, null, null);
-        new node(0,temp.get(temp.size()-1).move_,Parent,new ArrayList<node>());
-        new node(0,temp.get(temp.size()-2).move_,Parent,new ArrayList<node>());
-        new node(0,temp.get(temp.size()-3).move_,Parent,new ArrayList<node>());
-        for(int height = 1; height < 4; height++){
-            color tempCol = (height%2!=0)?colIn:((colIn==color.white)?color.black:color.white);
-            List<movePref> temp2 = m.getMoves(boardIn, colIn);
-            for(int i = 1; i < 4; i++){
-                new node(height,temp.get(temp.size()-i).move_,null,null);
+        HashMap<String,move> savedMoves = new HashMap<String,move>(20);
+        for(int height = 0; height < 4; height++){
+            if(height == 0){
+                savedMoves.put(0+","+1, new move(boardIn, null, null));
+            }else if (height > 0){
+                color tempCol = (height%2!=0)?colIn:((colIn==color.white)?color.black:color.white);
+                int YMAX = (int)Math.pow(2,height);
+                for(int i = 1; i < YMAX+1; i++){
+                    int last[] = {height-1, ((i%2==0)?i:i+1)/2,};
+                    int savePoint[] = {height,i};
+                    moves m = new moves();
+                    board bb = new board();
+                    for(int j = 0; j < 8; j++){
+                        for(int k = 0; k < 8; k++){
+                            bb.boardContent[j][k] = savedMoves.get(last[0]+","+last[1]).currentBoard.boardContent[j][k];
+                        }    
+                    }
+                    //bb.applyMove(savedMoves.get(last[0]+","+last[1]));
+                    List<movePref> mm = m.getMoves(bb, tempCol);
+                    bb.applyMove(mm.get(mm.size()-((i%2==0)?1:2)).move_); 
+                    savedMoves.put(savePoint[0]+","+savePoint[1], new move(bb, mm.get(mm.size()-((i%2==0)?1:2)).move_.startPos,mm.get(mm.size()-((i%2==0)?1:2)).move_.endPos));
+                    bb.printBoard();
+                }
             }
         }
+        List<Integer> moveValue = new ArrayList<Integer>(10);
+        for(int i = 1; i <9; i++){
+            //moves m = new moves();
+            //moveValue.set(i,m.getValue(savedMoves.get(3+","+i)));
+            //get move reverse --> get last board (reverse applayed move)&& reverse move order 
+            //-->get Value
+        }
+        System.out.println(Collections.max(moveValue));
+        //go through last values -> find highest --> return 1st or 2nd
         return new move(boardIn, null, null);
     }
 }
+
+/*
+ * TODO:
+ * -exception in List size (return of moves)
+ * -don't save moves but board (with null move)
+ */

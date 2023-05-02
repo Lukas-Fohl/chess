@@ -47,7 +47,7 @@ public class moves{
         }
     }
     
-    private int getValue(move moveIn){
+    public int getValue(move moveIn){
         int reVal = 0;
         //board tempBoardPref = (board)((board)boardTemp);//.clone()
         board tempBoardPref = new board();
@@ -233,19 +233,3 @@ public class moves{
         return reVal;
     }
 }
-
-
-/*
-TODO
-rate move:
-    -look if pieces are open --> possible moves                             done
-    -look if king is in danger                                              done
-    -look for value in pieces and color                                     done
-    -look for spread in pieces                                              done
-    -look for danger in all pieces and the value                            done
-    -check for possible damage                                              done
-    -control of mid                                                         done
-game loop:
-    -look for more then one move                                            x
-    -look for game end                                                      done
-*/

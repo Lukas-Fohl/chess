@@ -59,6 +59,7 @@ public class board implements Cloneable{
     }
 
     public void applyMove(move moveIn){
+        if(moveIn.endPos == null || moveIn.endPos == null){return;}
         if((moveIn.startPos[1] == 1 || moveIn.startPos[1] == 6) &&
             (boardContent[moveIn.startPos[0]][moveIn.startPos[1]].TypeOfPiece == piecesType.pawn) &&
             (moveIn.endPos[1] == 7 || moveIn.endPos[1] == 0)){
